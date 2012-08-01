@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 
 require_relative 'hangtag_kit'
+require 'fileutils'
+
+unless File.directory?("./Tags/")
+  raise "Could not find the ./Tags/! This directory must exist and contain all the needed tag files!"
+end
+
 
 print "Path to kit csv data? "
 kit_data_file_name = gets.chomp

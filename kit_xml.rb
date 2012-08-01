@@ -2,6 +2,13 @@ class KitXml
   
   require 'builder'
   
+  def initialize
+    # If the XML directory does not exist create one
+    unless File.directory?("./XML")
+      Dir.mkdir("./XML")
+    end
+  end
+  
   def create(kit_rm, tags)
     
     # Create the XML files

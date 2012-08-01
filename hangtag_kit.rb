@@ -5,11 +5,20 @@ class HangtagKit
   require 'fileutils'
   require_relative 'kit_xml'
   
+  def initialize
+    # If the kit_InDD directory does not exist create one
+    unless File.directory?("./kit_InDD")
+      Dir.mkdir("./kit_InDD")
+    end
+  end
+  
   def parse_csv(raw_kit_data)
+    
     csv_data = CSV.read(raw_kit_data)
     headers = csv_data.shift.map {|i| i }
     string_data = csv_data.map {|row| row.map {|cell| cell.to_s } }
     @kit_data_hash = string_data.map {|row| Hash[*headers.zip(row).flatten] }
+    
   end
   
   def all_tags_exist?
@@ -32,7 +41,7 @@ class HangtagKit
             kit_rm_number = rm_number
           else
             
-            kit_files << "/Users/brett_piatt/Devel/HangTags/S13/Kits/PDF/#{rm_number}.pdf"
+            kit_files << "./Kits/PDF/#{rm_number}.pdf"
             
             if File.exists?("./Tags/InDD/#{rm_number}.indd")
               @tag_file_name[rm_number] = "./Tags/InDD/#{rm_number}.indd"
