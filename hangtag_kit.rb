@@ -41,7 +41,7 @@ class HangtagKit
             kit_rm_number = rm_number
           else
             
-            kit_files << "./Kits/PDF/#{rm_number}.pdf"
+            kit_files << "#{rm_number}.pdf"
             
             if File.exists?("./Tags/InDD/#{rm_number}.indd")
               @tag_file_name[rm_number] = "./Tags/InDD/#{rm_number}.indd"
@@ -80,6 +80,20 @@ class HangtagKit
   end
   
   def copy_tag_files
+    
+    # Create the directory structure if it does not exist.
+    unless File.directory?("./Tags/Collected")
+      Dir.mkdir("./Tags/Collected")
+    end
+    
+    unless File.directory?("./Tags/Collected/PDF")
+      Dir.mkdir("./Tags/Collected/PDF")
+    end
+    
+    unless File.directory?("./Tags/Collected/InDD")
+      Dir.mkdir("./Tags/Collected/InDD")
+    end
+    
     @tag_file_name.each do |key, full_file_name|
       if full_file_name.match("pdf")
         FileUtils.cp(full_file_name, "./Tags/Collected/PDF/")
@@ -89,12 +103,16 @@ class HangtagKit
     end 
   end
   
-  def create_kit_files
+  def create_kit_files(tag_PDF_path)
+    
+    unless File.exist?("./Template/kit.indd")
+      raise "Cannot find Template/kit.indd file! EXITING!!"
+    end
     
     @kits.each do |key, tags|
       FileUtils.cp("./Template/kit.indd", "./kit_InDD/#{key}.indd")
       kit_xml = KitXml.new
-      kit_xml.create(key, tags)
+      kit_xml.create(key, tags, tag_PDF_path)
     end
     
   end

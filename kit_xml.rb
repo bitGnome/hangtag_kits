@@ -9,7 +9,7 @@ class KitXml
     end
   end
   
-  def create(kit_rm, tags)
+  def create(kit_rm, tags, tag_PDF_path)
     
     # Create the XML files
     xml_file_name = "./XML/#{kit_rm}.xml"
@@ -24,7 +24,7 @@ class KitXml
       tag_index = 0
       
       tags.each do |tag|
-        xml.tag!("tag#{tag_index}", "href"  => tag)
+        xml.tag!("tag#{tag_index}", "href"  => "#{tag_PDF_path}#{tag}")
         tag_index += 1
       end
 
